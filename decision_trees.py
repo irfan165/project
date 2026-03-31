@@ -30,10 +30,10 @@ y = df["Diabetes_binary"]
 
 # Train-test split (80/20)
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42, stratify=y
+    X, y, test_size=0.2, random_state=1008015354, stratify=y
 )
 
-dt_base = DecisionTreeClassifier(random_state=42)
+dt_base = DecisionTreeClassifier(random_state=1008015354)
 dt_base.fit(X_train, y_train)
 y_pred_base = dt_base.predict(X_test)
 
@@ -48,7 +48,7 @@ param_grid = {
 }
 
 grid_search = GridSearchCV(
-    estimator=DecisionTreeClassifier(random_state=42),
+    estimator=DecisionTreeClassifier(random_state=1008015354),
     param_grid=param_grid,
     cv=5,
     scoring="roc_auc",
