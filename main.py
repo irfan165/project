@@ -5,15 +5,15 @@ import pandas as pd
 
 import sklearn
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 file_path = "Dataset/diabetes_binary_5050split_health_indicators_BRFSS2015.csv"
+
 def load_data(file_path):
     df = pd.read_csv(file_path)
 
@@ -35,25 +35,19 @@ def split_and_scale(X, y):
 
 def train_models(X_train, X_train_scaled, y_train):
     models = {
-        "Logistic Regression": LogisticRegression(max_iter=1000, random_state=42),
+        "Logistic Regression": LogisticRegression(max_iter=1000, random_state = 1008015354),
         "KNN": KNeighborsClassifier(n_neighbors=5),
-        "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42),
-        "Gradient Boosting": GradientBoostingClassifier(random_state=42)
+        "Random Forest": RandomForestClassifier(n_estimators=100, random_state = 1008015354),
+        "Gradient Boosting": GradientBoostingClassifier(random_state = 1008015354)
     }
-
-    # KNN and Logistic Regression usually work better with scaled data
     models["Logistic Regression"].fit(X_train_scaled, y_train)
     models["KNN"].fit(X_train_scaled, y_train)
-
-    # Tree-based models do not need scaling
     models["Random Forest"].fit(X_train, y_train)
     models["Gradient Boosting"].fit(X_train, y_train)
-
     return models
 
 def evaluate_models(models, X_test, X_test_scaled, y_test):
     results = {}
-
     for name, model in models.items():
         if name in ["Logistic Regression", "KNN"]:
             y_pred = model.predict(X_test_scaled)
@@ -62,7 +56,7 @@ def evaluate_models(models, X_test, X_test_scaled, y_test):
 
         acc = accuracy_score(y_test, y_pred)
         results[name] = acc
-
+        
         print(f"\n{name}")
         print("-" * 40)
         print(f"Accuracy: {acc:.4f}")
