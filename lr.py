@@ -106,3 +106,14 @@ print(coef_df.head(10))
 
 print("\nTop Negative Coefficients:")
 print(coef_df.tail(10))
+
+top_pos = coef_df.head(10)
+top_neg = coef_df.tail(10)
+
+coef_plot = pd.concat([top_neg, top_pos])
+
+plt.figure(figsize=(10,6))
+plt.barh(coef_plot["Feature"], coef_plot["Coefficient"])
+plt.xlabel("Coefficient")
+plt.title("Top Logistic Regression Coefficients")
+plt.show()
